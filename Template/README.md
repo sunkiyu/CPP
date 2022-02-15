@@ -3,6 +3,7 @@
 -포인터 타입   
 -enum 타입   
 -nullptr   
+*  C스타일 배열을 함수에 전달할 때 배열의 크기에 대한 정보를 잃어버리는데 템플릿 인자를 활용하면 유용하다   
 ```cpp
 template <typename T, int num>
 T custom_add_num(T t) {
