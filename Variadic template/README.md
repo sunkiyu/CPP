@@ -127,3 +127,5 @@ int sum_all(Ints... nums) {
   return (... + nums);
 }
 ```
+
+[참조 씹어먹는 C\+\+ - \<9 - 1. 가변 길이 템플릿 \(Variadic template\)\>](https://modoocode.com/290)
