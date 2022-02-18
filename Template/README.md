@@ -115,3 +115,4 @@ int a = 3, b = 4;
 std::cout << "min : " << Min<int, Compare<int>>(a, b);
 
 ```
+[참조](https://modoocode.com/219)
