@@ -115,4 +115,4 @@ int a = 3, b = 4;
 std::cout << "min : " << Min<int, Compare<int>>(a, b);
 
 ```
-[참조](https://modoocode.com/219)
+[참조 씹어먹는 C\+\+ - \<9 - 1. 코드를 찍어내는 틀 - C++ 템플릿\(template\)\>](https://modoocode.com/219)
