@@ -1,8 +1,9 @@
 ## Template   
 * template <typename T>와 template <class T>는 같은 의미이다.   
 * template는 인스턴스화 되어야지만 컴파일러가 실제 코드를 생성한다.   
- 
-> 템플릿 특수화   
+
+***
+### 템플릿 특수화   
 
 * Template에 인자를 넘길 수 있는데 해당 인자는 다음과 같다.  [참고](https://en.cppreference.com/w/cpp/language/template_parameters)   
 -bool, char, int, long 등  float,double 제외   
