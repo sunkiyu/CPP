@@ -77,7 +77,8 @@ int main()
 }
 ```
 * Comp1 과 Comp2 객체들은 bubble_sort 함수 안에서 함수처럼 사용됨
-* 함수는 아니지만 함수처럼 동작하는 객체를 **함수 객체 \(Function Object\=\=Functor\)** 라고 한다. 
+* 함수는 아니지만 함수처럼 동작하는 객체를 **함수 객체 \(Function Object\=\=Functor\)** 라고 한다.   
+* Functor 는 컴파일러가 operator() 자체를 인라인화 시켜서 빠르게 작업 수행
 * Template에 인자를 넘길 수 있는데 해당 인자는 다음과 같다.  [참고](https://en.cppreference.com/w/cpp/language/template_parameters)   
 -bool, char, int, long 등  float,double 제외   
 -포인터 타입   
@@ -94,4 +95,23 @@ int main() {
   int x = 3;
   std::cout << "x : " << custom_add_num<int, 5>(x) << std::endl;
 }
+
+//디폴트 템플릿 인자도 사용이 가능하다
+template <typename T, int num = 5>
+T add_num(T t) {
+  return t + num;
+}
+
+int main() {
+  int x = 3;
+  std::cout << "x : " << add_num(x) << std::endl;
+}
+
+struct Compare {
+  bool operator()(const T& a, const T& b) const { return a < b; }
+};
+
+int a = 3, b = 4;
+std::cout << "min : " << Min<int, Compare<int>>(a, b);
+
 ```
