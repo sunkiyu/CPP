@@ -1,5 +1,5 @@
 ## Template   
-* template <typename T>와 template <class T>는 같은 의미이다.   
+* template \<typename T\>와 template \<class T\>는 같은 의미이다.   
 * template는 인스턴스화 되어야지만 컴파일러가 실제 코드를 생성한다.   
 
 ***
