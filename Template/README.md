@@ -56,6 +56,7 @@ void bubble_sort(Cont& cont, Comp& comp) {
   for (int i = 0; i < cont.size(); i++) {
     for (int j = i + 1; j < cont.size(); j++) {
       //comp는 함수가 아니라 객체이며, Comp클래스에서 ()연산자를 오버로딩하였다.
+      //Comp1 과 Comp2 객체들은 bubble_sort 함수 안에서 함수처럼 사용됨
       if (!comp(cont[i], cont[j])) {
         cont.swap(i, j);
       }
@@ -75,6 +76,8 @@ int main()
    bubble_sort(int_vec, comp1);
 }
 ```
+* Comp1 과 Comp2 객체들은 bubble_sort 함수 안에서 함수처럼 사용됨
+* 함수는 아니지만 함수처럼 동작하는 객체를 **함수 객체 (Function Object==Functor)**라고 한다. 
 * Template에 인자를 넘길 수 있는데 해당 인자는 다음과 같다.  [참고](https://en.cppreference.com/w/cpp/language/template_parameters)   
 -bool, char, int, long 등  float,double 제외   
 -포인터 타입   
