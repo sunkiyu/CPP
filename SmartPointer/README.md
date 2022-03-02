@@ -148,3 +148,5 @@ std::shared_ptr<A> p2(p1);  // p2 역시 생성된 객체 A 를 가리킨다.
 std::unique_ptr<A> p1(new A());
 std::unique_ptr<A> p2(p1);  // 컴파일 오류!
 ```
+![image](https://user-images.githubusercontent.com/68372094/156302657-d120a39a-daa2-464e-aeff-7c4683a5242a.png)
+*  참조 개수가 0 이 되어야 가리키고 있는 객체를 해제할 수 있다.
