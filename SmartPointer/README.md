@@ -110,4 +110,27 @@ int main() {
   ptr->print();
 }
 ```
+```cpp
+std::vector<std::unique_ptr<A>> vec;
+std::unique_ptr<A> pa(new A(1));
+//vector의 복사 생성자를 호출 Error
+vec.push_back(pa);
+
+int main() {
+  std::vector<std::unique_ptr<A>> vec;
+  std::unique_ptr<A> pa(new A(1));
+  //이동 생성자 호출 OK
+  vec.push_back(std::move(pa));  
+}
+
+td::vector<std::unique_ptr<A>> vec;
+
+  // vec.push_back(std::unique_ptr<A>(new A(1))); 과 동일
+  vec.emplace_back(new A(1));
+
+  vec.back()->some();
+```
+* emplace_back 함수를 이용하면, vector 안에 unique_ptr 을 직접 생성 하면서 집어넣는다.(불필요한 이동 과정을 생략)
+* emplace_back 함수는 전달된 인자를 완벽한 전달(perfect forwarding) 을 통해, 직접 unique_ptr<A> 의 생성자에 전달 해서, vector 맨 뒤에 unique_ptr<A> 객체를 생성. 
 ***
+*[참조 씹어먹는 C \+\+ - \<13 - 1. 객체의 유일한 소유권 - unique_ptr\>](https://modoocode.com/229)
