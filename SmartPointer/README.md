@@ -161,7 +161,7 @@ std::cout << p2.use_count();  // 2
 ![image](https://user-images.githubusercontent.com/68372094/156303201-7803fdc8-4d2c-4324-92f7-e9cd59abccf9.png)
 * shared_ptr 가 제어 블록(control block) 을 동적으로 할당한 후, shared_ptr 들이 이 제어 블록에 필요한 정보를 공유
 ***
-*WeakPtr
+## WeakPtr
 * weak_ptr 그 자체로는 원소를 참조할 수 없고, shared_ptr 로 변환해야 해야함. lock 함수를 통해 수행
 * weak_ptr 에 정의된 lock 함수는 만일 weak_ptr 가 가리키는 객체가 아직 메모리에서 살아 있다면 (즉 참조 개수가 0 이 아니라면) 해당 객체를 가리키는 shared_ptr 을 반환하고, 
  이미 해제가 되었다면 아무것도 가리키지 않는 shared_ptr 을 반환
