@@ -177,3 +177,4 @@ void access_other() {
   }
 }
 ```
+[참조 씹어먹는 C \+\+ - \<13 - 2. 자원을 공유할 때 - shared_ptr 와 weak_ptr\>](https://modoocode.com/252)
