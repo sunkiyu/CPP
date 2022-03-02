@@ -149,4 +149,31 @@ std::unique_ptr<A> p1(new A());
 std::unique_ptr<A> p2(p1);  // 컴파일 오류!
 ```
 ![image](https://user-images.githubusercontent.com/68372094/156302657-d120a39a-daa2-464e-aeff-7c4683a5242a.png)
-*  참조 개수가 0 이 되어야 가리키고 있는 객체를 해제할 수 있다.
+*  참조 개수가 0 이 되어야 가리키고 있는 객체를 해제할 수 있다
+```cpp
+std::shared_ptr<A> p1(new A());
+std::shared_ptr<A> p2(p1);  // p2 역시 생성된 객체 A 를 가리킨다.
+
+std::cout << p1.use_count();  // 2
+std::cout << p2.use_count();  // 2
+```
+* 현재 shared_ptr 의 참조 개수가 몇 개 인지는 use_count 함수를 통해 알 수 있다.
+![image](https://user-images.githubusercontent.com/68372094/156303201-7803fdc8-4d2c-4324-92f7-e9cd59abccf9.png)
+* shared_ptr 가 제어 블록(control block) 을 동적으로 할당한 후, shared_ptr 들이 이 제어 블록에 필요한 정보를 공유
+***
+*WeakPtr
+* weak_ptr 그 자체로는 원소를 참조할 수 없고, shared_ptr 로 변환해야 해야함. lock 함수를 통해 수행
+* weak_ptr 에 정의된 lock 함수는 만일 weak_ptr 가 가리키는 객체가 아직 메모리에서 살아 있다면 (즉 참조 개수가 0 이 아니라면) 해당 객체를 가리키는 shared_ptr 을 반환하고, 
+ 이미 해제가 되었다면 아무것도 가리키지 않는 shared_ptr 을 반환
+* 순환 참조 상대를 weak_ptr로 가르킨다.
+```cpp
+void access_other() {
+  //other은 weak_ptr로 상대를 가르키고 있다.
+  std::shared_ptr<A> o = other.lock();
+  if (o) {
+    std::cout << "접근 : " << o->name() << std::endl;
+  } else {
+    std::cout << "이미 소멸됨 ㅠ" << std::endl;
+  }
+}
+```
