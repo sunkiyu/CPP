@@ -140,11 +140,11 @@ td::vector<std::unique_ptr<A>> vec;
 * 어떤 객체가 먼저 소멸되는지 알 수 없기 때문에 이 자원 역시 어느 타이밍에 해제 시켜야 할 지 알 수 없음.
 * 해결방안 =>  특정 자원을 몇 개의 객체에서 가리키는지를 추적한 다음에, 그 수가 0 이 되야만 비로소 해제를 시켜주는 방식의 포인터가 필요.(SharedPtr)
 	
-	```cpp
-	std::shared_ptr<A> p1(new A());
+```cpp
+std::shared_ptr<A> p1(new A());
 std::shared_ptr<A> p2(p1);  // p2 역시 생성된 객체 A 를 가리킨다.
 
 // 반면에 unique_ptr 의 경우
 std::unique_ptr<A> p1(new A());
 std::unique_ptr<A> p2(p1);  // 컴파일 오류!
-	```
+```
