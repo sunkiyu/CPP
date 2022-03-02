@@ -132,5 +132,19 @@ td::vector<std::unique_ptr<A>> vec;
 ```
 * emplace_back 함수를 이용하면, vector 안에 unique_ptr 을 직접 생성 하면서 집어넣는다.(불필요한 이동 과정을 생략)
 * emplace_back 함수는 전달된 인자를 완벽한 전달(perfect forwarding) 을 통해, 직접 unique_ptr<A> 의 생성자에 전달 해서, vector 맨 뒤에 unique_ptr<A> 객체를 생성. 
-***
 * [참조 씹어먹는 C \+\+ - \<13 - 1. 객체의 유일한 소유권 - unique_ptr\>](https://modoocode.com/229)
+***   
+## SharedPtr
+* 여러 객체에서 하나의 자원을 사용하고자 한다.
+* 추후에 자원을 해제하기 위해서는 이 자원을 사용하는 모든 객체들이 소멸되야 한다.(자원이 해제된 상태에서 다른 객체가 참조하여 에러가 발생할 수 있기 때문)
+* 어떤 객체가 먼저 소멸되는지 알 수 없기 때문에 이 자원 역시 어느 타이밍에 해제 시켜야 할 지 알 수 없음.
+* 해결방안 =>  특정 자원을 몇 개의 객체에서 가리키는지를 추적한 다음에, 그 수가 0 이 되야만 비로소 해제를 시켜주는 방식의 포인터가 필요.(SharedPtr)
+	
+	```cpp
+	std::shared_ptr<A> p1(new A());
+std::shared_ptr<A> p2(p1);  // p2 역시 생성된 객체 A 를 가리킨다.
+
+// 반면에 unique_ptr 의 경우
+std::unique_ptr<A> p1(new A());
+std::unique_ptr<A> p2(p1);  // 컴파일 오류!
+	```
