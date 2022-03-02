@@ -133,4 +133,4 @@ td::vector<std::unique_ptr<A>> vec;
 * emplace_back 함수를 이용하면, vector 안에 unique_ptr 을 직접 생성 하면서 집어넣는다.(불필요한 이동 과정을 생략)
 * emplace_back 함수는 전달된 인자를 완벽한 전달(perfect forwarding) 을 통해, 직접 unique_ptr<A> 의 생성자에 전달 해서, vector 맨 뒤에 unique_ptr<A> 객체를 생성. 
 ***
-*[참조 씹어먹는 C \+\+ - \<13 - 1. 객체의 유일한 소유권 - unique_ptr\>](https://modoocode.com/229)
+* [참조 씹어먹는 C \+\+ - \<13 - 1. 객체의 유일한 소유권 - unique_ptr\>](https://modoocode.com/229)
