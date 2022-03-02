@@ -21,9 +21,93 @@ class A {
 
 void do_something() { A *pa = new A(); }
 ```
-* pa를 일반 포인터가 아닌 포인터 객체로 만들면 자신이 사라질 때 자신이 가르키고 있는 데이터도 같이 delete 하면 되는데
+* pa를 일반 포인터이기 때문에 소멸자가 호출되지 않는다. 포인터 객체로 만들면 자신이 소멸될 때 자신이 가르키고 있는 데이터도 같이 delete 하면 되는데
 * 이 기능을 제공하는 것을 스마트 포인터라한다.
 ***
 ## UniquePtr 
+* 메모리 관련 문제는 2가지가 발생할 수 있다.
+* 1. 메모리 사용 후 해제를 하지 않아 누수 메모리가 계속 증가하여 프로그램이 뻗어버림(RAII 패턴을 통해 해결할 수 있다.)   
+* 2. 이미 해제된 메모리를 참조하는 문제
+```cpp
+Data* data = new Data();
+Date* data2 = data;
+delete data;
+// ...
+// 메모리 오류가 나면서 프로그램이 죽는다. Double Free Bug
+delete data2;
+```
+* 포인터에 소유권을 부여하여 소유권이 있는 포인터 말고는 메모리 해제를 못하게하여 해결가능하다.
+* 즉 delete data는 가능하지만 delete data2는 불가능하도록 한다.
+* 이렇게 특정 객체에 유일한 소유권을 부여하는 포인터 객체를 UniquePtr이라 부른다.
+```cpp
+class A {
+  int *data;
 
+ public:
+  A() {
+    std::cout << "자원을 획득함!" << std::endl;
+    data = new int[100];
+  }
+
+  void some() { std::cout << "일반 포인터와 동일하게 사용가능!" << std::endl; }
+
+  ~A() {
+    std::cout << "자원을 해제함!" << std::endl;
+    delete[] data;
+  }
+};
+
+void do_something() {
+  std::unique_ptr<A> pa(new A());
+  //unique_ptr 은 -> 연산자를 오버로드해서 포인터를 다루는 것과 같이 사용할 수 있음
+  pa->some();
+}
+
+int main() { do_something(); }
+```
+* pa는 스택에 정의된 객체이기 때문에 Scope를 벗어나면 소멸자가 호출된다.
+* 그리고 이 UniquePtr의 소멸자 안에서 자신이 가르키고 있는 객체를 delete 해준다.
+```cpp
+std::unique_ptr<A> pa(new A());
+//오류 발생 삭제 함수 사용
+std::unique_ptr<A> pb = pa;
+
+//unique 함수 정의를 들어가보면 복사생성자와 복사 대입연산자가 delete 되어있다.
+//unique_ptr 는 어떠한 객체를 유일하게 소유해야 하기 때문.
+// Disable copy from lvalue.
+unique_ptr(const unique_ptr&) = delete;
+unique_ptr& operator=(const unique_ptr&) = delete;
+```
+* unique_ptr의 소유권 이전은 가능하다.
+```cpp
+  std::unique_ptr<A> pa(new A());
+  pa->some();
+
+  // pb 에 소유권을 이전.
+  //unique_ptr 은 복사 생성자는 정의되어 있지 않지만, 이동 생성자는 가능.
+  std::unique_ptr<A> pb = std::move(pa);
+  pb->some();
+  
+  //이동 생성자가 아래와 같이 정의 되어 있다.   
+   /// Move constructor.
+   unique_ptr(unique_ptr&& __u) noexcept
+   : _M_t(__u.release(), std::forward<deleter_type>(__u.get_deleter())) { }
+```
+
+```cpp
+class Foo {
+  int a, b;
+
+ public:
+  Foo(int a, int b) : a(a), b(b) { std::cout << "생성자 호출!" << std::endl; }
+  void print() { std::cout << "a : " << a << ", b : " << b << std::endl; }
+  ~Foo() { std::cout << "소멸자 호출!" << std::endl; }
+};
+
+int main() {
+  //make_unique 함수는 템플릿 인자로 전달된 클래스의 생성자에 인자들에 직접 완벽한 전달을 수행
+  auto ptr = std::make_unique<Foo>(3, 5);
+  ptr->print();
+}
+```
 ***
