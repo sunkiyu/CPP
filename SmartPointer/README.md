@@ -24,7 +24,7 @@ void do_something() { A *pa = new A(); }
 * pa를 일반 포인터이기 때문에 소멸자가 호출되지 않는다. 포인터 객체로 만들면 자신이 소멸될 때 자신이 가르키고 있는 데이터도 같이 delete 하면 되는데
 * 이 기능을 제공하는 것을 스마트 포인터라한다.
 ***
-## UniquePtr 
+## unique_Ptr 
 * 메모리 관련 문제는 2가지가 발생할 수 있다.
 * 1. 메모리 사용 후 해제를 하지 않아 누수 메모리가 계속 증가하여 프로그램이 뻗어버림(RAII 패턴을 통해 해결할 수 있다.)   
 * 2. 이미 해제된 메모리를 참조하는 문제
@@ -134,7 +134,7 @@ td::vector<std::unique_ptr<A>> vec;
 * emplace_back 함수는 전달된 인자를 완벽한 전달(perfect forwarding) 을 통해, 직접 unique_ptr<A> 의 생성자에 전달 해서, vector 맨 뒤에 unique_ptr<A> 객체를 생성. 
 * [참조 씹어먹는 C \+\+ - \<13 - 1. 객체의 유일한 소유권 - unique_ptr\>](https://modoocode.com/229)
 ***   
-## SharedPtr
+## shared_ptr
 * 여러 객체에서 하나의 자원을 사용하고자 한다.
 * 추후에 자원을 해제하기 위해서는 이 자원을 사용하는 모든 객체들이 소멸되야 한다.(자원이 해제된 상태에서 다른 객체가 참조하여 에러가 발생할 수 있기 때문)
 * 어떤 객체가 먼저 소멸되는지 알 수 없기 때문에 이 자원 역시 어느 타이밍에 해제 시켜야 할 지 알 수 없음.
@@ -161,7 +161,7 @@ std::cout << p2.use_count();  // 2
 ![image](https://user-images.githubusercontent.com/68372094/156303201-7803fdc8-4d2c-4324-92f7-e9cd59abccf9.png)
 * shared_ptr 가 제어 블록(control block) 을 동적으로 할당한 후, shared_ptr 들이 이 제어 블록에 필요한 정보를 공유
 ***
-## WeakPtr
+## weak_ptr
 * weak_ptr 그 자체로는 원소를 참조할 수 없고, shared_ptr 로 변환해야 해야함. lock 함수를 통해 수행
 * weak_ptr 에 정의된 lock 함수는 만일 weak_ptr 가 가리키는 객체가 아직 메모리에서 살아 있다면 (즉 참조 개수가 0 이 아니라면) 해당 객체를 가리키는 shared_ptr 을 반환하고, 
  이미 해제가 되었다면 아무것도 가리키지 않는 shared_ptr 을 반환
