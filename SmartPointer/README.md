@@ -160,6 +160,39 @@ std::cout << p2.use_count();  // 2
 * 현재 shared_ptr 의 참조 개수가 몇 개 인지는 use_count 함수를 통해 알 수 있다.
 ![image](https://user-images.githubusercontent.com/68372094/156303201-7803fdc8-4d2c-4324-92f7-e9cd59abccf9.png)
 * shared_ptr 가 제어 블록(control block) 을 동적으로 할당한 후, shared_ptr 들이 이 제어 블록에 필요한 정보를 공유
+```cpp
+class A : public std::enable_shared_from_this<A> {
+  int *data;
+
+ public:
+  A() {
+    data = new int[100];
+    std::cout << "자원을 획득함!" << std::endl;
+  }
+
+  ~A() {
+    std::cout << "소멸자 호출!" << std::endl;
+    delete[] data;
+  }
+
+  std::shared_ptr<A> get_shared_ptr() { return shared_from_this(); }
+};
+
+int main() {
+  //shared_ptr의 ref_count를 관리하는 제어블록을 새로 생성
+  std::shared_ptr<A> pa1 = std::make_shared<A>();
+  //앞서 이미 생성된 제어 블록에 ref_count를 증가시킨다. ref_count = 2;
+  //But, enable_shared_from_this<A>를 상속받지 않았으면 동일한 코드라도 제어 블록을 또 생성하게 되므로
+  //pa1과 pa2가 각각 ref_count=1로 서로다른 제어 블록을 관리하게 되어 p1이 먼저 소멸하면 가르키고 있는 메모리가 날라가는데
+  //pa2가 소멸할 때 이미 날라간 메모리를 Double Free 해주려고 하여 에러가 발생한다.
+  std::shared_ptr<A> pa2 = pa1->get_shared_ptr();
+
+  std::cout << pa1.use_count() << std::endl;
+  std::cout << pa2.use_count() << std::endl;
+}
+```
+* enable_shared_from_this 클래스에는 shared_from_this 라는 멤버 함수를 정의하고 있는데, 이 함수는 이미 정의되어 있는 제어 블록을 사용해서 shared_ptr 을 생성.
+* shared_from_this 가 작동하기 위해서는 해당 객체의 shared_ptr 가 반드시 먼저 정의되어 있어야 한다.
 ***
 ## weak_ptr
 * weak_ptr 그 자체로는 원소를 참조할 수 없고, shared_ptr 로 변환해야 해야함. lock 함수를 통해 수행
