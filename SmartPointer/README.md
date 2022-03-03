@@ -184,13 +184,16 @@ int main() {
   //앞서 이미 생성된 제어 블록에 ref_count를 증가시킨다. ref_count = 2;
   //But, enable_shared_from_this<A>를 상속받지 않았으면 동일한 코드라도 제어 블록을 또 생성하게 되므로
   //pa1과 pa2가 각각 ref_count=1로 서로다른 제어 블록을 관리하게 되어 p1이 먼저 소멸하면 가르키고 있는 메모리가 날라가는데
-  //pa2가 소멸할 때 이미 날라간 메모리를 Double Free 해주려고 하여 에러가 발생한다.
+  //pa2가 소멸할 때 이미 해제된 메모리를 Double Free 해주려고 하여 에러가 발생한다.
   std::shared_ptr<A> pa2 = pa1->get_shared_ptr();
 
   std::cout << pa1.use_count() << std::endl;
   std::cout << pa2.use_count() << std::endl;
 }
 ```
+![image](https://user-images.githubusercontent.com/68372094/156503082-ca38e92e-74e4-44ac-9bb4-bdd31c1d287c.png)
+![image](https://user-images.githubusercontent.com/68372094/156503143-b60010f4-ef87-4e20-aa18-bd96d77f67ec.png)
+
 * enable_shared_from_this 클래스에는 shared_from_this 라는 멤버 함수를 정의하고 있는데, 이 함수는 이미 정의되어 있는 제어 블록을 사용해서 shared_ptr 을 생성.
 * shared_from_this 가 작동하기 위해서는 해당 객체의 shared_ptr 가 반드시 먼저 정의되어 있어야 한다.
 ***
