@@ -7,6 +7,16 @@ void wrapper(T&& u) {
 
 //오로지 우측값만 받을 수 있다.
 void show_value(int&& t) { std::cout << "우측값 : " << t << std::endl; }
+
+typedef int& T;
+T& r1;   // int& &; r1 은 int&
+T&& r2;  // int & &&;  r2 는 int&
+
+typedef int&& U;
+U& r3;   // int && &; r3 는 int&
+U&& r4;  // int && &&; r4 는 int&&
+
+//& =1, && =0 이라 생각하고 OR 연산하면된다.
 ```
 *  __템플릿__ 인자 T 에 대해서, 우측값 또는 좌측값을 받는 형태를 보편적 레퍼런스(Universal reference) 라고 한다.
 *  템플릿 타입의 우측값 레퍼런스(보편적 레퍼런스)는 우측값 뿐만이 아니라 좌측값 역시 받아낼 수 있다.
