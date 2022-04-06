@@ -25,3 +25,144 @@ U&& r4;  // int && &&; r4 는 int&&
 * => 이 문제를 해결해주는 것이 forward 함수. 이 함수는 u 가 우측값 레퍼런스 일 때 에만 마치 move 를 적용한 것 처럼 동작함
 
 [참조 씹어먹는 C\+\+ - \<12 - 2. Move 문법 (std\:\:move semantics) 과 완벽한 전달 (perfect forwarding)\>](https://modoocode.com/228)
+
+```cpp
+class A;
+void g(A&& arg)
+{
+    cout<<"Right Value Ref"<<endl;
+}
+
+class A
+{
+public:
+    int memA;
+};
+
+int main()
+{
+   A valA;
+   g(valA); //컴파일 에러
+   g(A()); //OK
+	 
+	 return 0;
+}
+```
+* 일반 함수에서 &&파라미터는 우측값 밖에 받지 못한다.
+* 하지만 템플릿을 사용한다면 &&는 우측값과 좌측값 모두를 받게 된다.
+
+```cpp
+template <typename T>
+void g(T&& arg)
+{
+    cout<<"Right Value Ref"<<endl;
+}
+
+template <typename T>
+void g(T& arg)
+{
+    cout<<"Left Value Ref"<<endl;
+}
+
+template <typename T>
+void wrapper(T&& u) {
+  g(u);
+}
+
+class A
+{
+public:
+    int memA;
+};
+
+int main()
+{
+   A valA;
+   wrapper(valA);//...1
+   wrapper(A());//...2
+   return 0;
+}
+```
+출력 
+Left Value Ref
+Left Value Ref
+
+* void wrapper(T&& u)의 u 값이 좌측값이라는 것은 불변의 진리이기 때문에 g(u)에서 항상 좌측값 레퍼런스가 호출된다.
+
+```cpp
+template <typename T>
+void g(T&& arg)
+{
+    cout<<"Right Value Ref"<<endl;
+}
+
+template <typename T>
+void g(T& arg)
+{
+    cout<<"Left Value Ref"<<endl;
+}
+
+template <typename T>
+void wrapper(T&& u) {
+  g(std::move(u));
+}
+
+class A
+{
+public:
+    int memA;
+};
+
+int main()
+{
+   A valA;
+   wrapper(valA);//...1
+   wrapper(A());//...2
+   return 0;
+}
+```
+출력 
+Right Value Ref
+Right Value Ref
+
+* 위의 예제의 경우 1은 좌측값 2는 우측값으로 wrapper에 인자를 전달하고 있다.
+* void wrapper(T&& u)의 u 값이 좌측값이라는 것은 불변의 진리이기 때문에 g(std::move(u))에서 항상 우측값 레퍼런스가 호출출된다.
+
+```cpp
+template <typename T>
+void g(T&& arg)
+{
+    cout<<"Right Value Ref"<<endl;
+}
+
+template <typename T>
+void g(T& arg)
+{
+    cout<<"Left Value Ref"<<endl;
+}
+
+template <typename T>
+void wrapper(T&& u) {
+  g(std::forward<T>(u));
+}
+
+class A
+{
+public:
+    int memA;
+};
+
+int main()
+{
+   A valA;
+   wrapper(valA);//...1
+   wrapper(A());//...2
+   return 0;
+}
+```
+출력 
+Left Value Ref
+Right Value Ref
+
+* 위의 문제를 해결하기위해 좌측값 전달은 좌측값으로 우측값 전달은 우측값을 인자로 받는 레퍼런스 함수를 호출하는 방법은 위와 같다.
+* std::forward<T>를 사용하여 인자를 넘긴다.
