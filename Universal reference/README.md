@@ -44,8 +44,8 @@ int main()
    A valA;
    g(valA); //컴파일 에러
    g(A()); //OK
-	 
-	 return 0;
+   
+   return 0;
 }
 ```
 * 일반 함수에서 &&파라미터는 우측값 밖에 받지 못한다.
@@ -83,11 +83,11 @@ int main()
    return 0;
 }
 ```
-출력 
-Left Value Ref
+출력   
+Left Value Ref   
 Left Value Ref
 
-* void wrapper(T&& u)의 u 값이 좌측값이라는 것은 불변의 진리이기 때문에 g(u)에서 항상 좌측값 레퍼런스가 호출된다.
+* void wrapper(T&& u)의 u 값이 좌측값이라는 것은 불변의 진리이기 때문에 항상 좌측값을 받는 g()가 호출된다.
 
 ```cpp
 template <typename T>
@@ -121,12 +121,12 @@ int main()
    return 0;
 }
 ```
-출력 
-Right Value Ref
+출력   
+Right Value Ref   
 Right Value Ref
 
 * 위의 예제의 경우 1은 좌측값 2는 우측값으로 wrapper에 인자를 전달하고 있다.
-* void wrapper(T&& u)의 u 값이 좌측값이라는 것은 불변의 진리이기 때문에 g(std::move(u))에서 항상 우측값 레퍼런스가 호출출된다.
+* void wrapper(T&& u)의 u 값이 좌측값이라는 것은 불변의 진리이기 때문에 g(std::move(u))에서 항상 우측값을 받는 g()가 호출된다. 호출출된다.
 
 ```cpp
 template <typename T>
@@ -160,9 +160,10 @@ int main()
    return 0;
 }
 ```
-출력 
-Left Value Ref
+출력   
+Left Value Ref   
 Right Value Ref
 
 * 위의 문제를 해결하기위해 좌측값 전달은 좌측값으로 우측값 전달은 우측값을 인자로 받는 레퍼런스 함수를 호출하는 방법은 위와 같다.
+* void wrapper(T&& u)인자로 넘어온 u가 좌측값이면 좌측값을 받는 g로 전달하고 u가 우측값이면 우측값을 받는 g로 전달된다.
 * std::forward<T>를 사용하여 인자를 넘긴다.
