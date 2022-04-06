@@ -1,0 +1,67 @@
+# Virtual Table
+
+```cpp
+class A
+{
+public:
+
+    int memA=0;
+    A(){cout<<"A Constructor"<<endl;};
+
+    A(A& cp)
+    {
+        memA=10;
+        cout<< "A cpConstructor&"<<endl;
+    }
+
+    A(A&& cp)
+    {
+        cout<< "A cpConstructor"<<endl;
+    }
+
+    void operator=(A&& cp)
+    {
+        cout<< "operator &&"<<endl;
+    }
+
+    void operator=(A& cp)
+    {
+        cout<< "operator &"<<endl;
+    }
+    void printString(){cout<< "A Called"<<endl;}
+    virtual void printString2(){cout<< "A Called"<<endl;}
+    virtual void printString3(){cout<< "A Called"<<endl;}
+};
+
+class B:public A
+{
+public:
+    int memb=20;
+    B(){cout<<"B Constructor"<<endl;};
+    B(B&& cp)
+    {
+        cout<< "A cpConstructor"<<endl;
+        memb=10;
+    }
+
+    void operator=(B&& cp)
+    {
+        cout<< "operator &&"<<endl;
+    }
+
+    void operator=(B& cp)
+    {
+        cout<< "operator &"<<endl;
+    }
+    void printString(){cout<< "B Called"<<endl;}
+    virtual void printString2() override{cout<< "B Called"<<endl;}
+};
+
+int main()
+{
+ 	 A memATest;
+   B memBTest;
+	return 0;
+}
+```
+
