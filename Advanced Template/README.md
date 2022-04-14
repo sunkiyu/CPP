@@ -95,6 +95,7 @@ struct HeadTailTest<T,char> //마찬가지로 특수화 OK
 
 };
 ```
+* 리스트의 Length 
 ***
 ```cpp
 template <typename ...ARGS>
@@ -126,6 +127,7 @@ struct HeadTailLength<HeadTailTest<T,U...>>      //파라미터를 하나만 받
  HeadTailLength<HeadTailTest<int,int,int>>::value;//3
 ```
 ***
+* Index to Type
 ```cpp
 //이 템플릿 구조체는 타입 1개와 int 형 인자 1개만 받는다.
 template<typename TL, int index>
@@ -159,6 +161,7 @@ using HTL = HeadTailTest<int,double,float>;
 FindType<HTL, 1>::Result whoAMI6; // double
 ```
 ***
+* Type to Index
 ```cpp
 //이 템플릿 구조체는 T,U 두가지 타입만 받을 것이다.
 template<typename T,typename U>
