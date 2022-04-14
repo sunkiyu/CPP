@@ -200,3 +200,30 @@ public:
 //How to Use
 FindIndex<HTL,double>::value; //1
 ```
+```cpp
+template<typename From, typename To>
+class Conversion
+{
+private:
+    using Small = __int8;
+    using Big = __int32;
+
+    static Small Test(const To&) {
+        return 0;
+    }
+    static Big Test(...) {
+        return 0;
+    }
+    static From MakeFrom() {
+        return 0;
+    }
+
+public:
+    enum
+    {
+        exists = sizeof(Test(MakeFrom())) == sizeof(Small)
+    };
+};
+//MakeFrom() 함수에서 From 타입을 리턴하게 되는데 Test 함수의 인자로 맵핑 될때 From Type이 To Type으로 캐스팅 가능하다면
+//static Small Test(const To&)로 맵핑되고 아닐 경우는 static Big Test(...) 로 맵핑된다.
+```
