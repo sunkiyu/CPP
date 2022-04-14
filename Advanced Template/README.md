@@ -66,8 +66,12 @@ struct HeadTailTest<T,U>            //컴파일 에러 -> 템플릿 구조체 �
 
 };
 //How to Use
-TypeList<A, B>::Head who;//A
-TypeList<A, B>::Tail who2;//B
+HeadTailTest<A, B>::Head who;//A
+HeadTailTest<A, B>::Tail who2;//B
+
+HeadTailTest<A, HeadTailTest<B, C>>::Head who3; //A
+HeadTailTest<A, HeadTailTest<B, C>>::Tail::Head who4;//B
+HeadTailTest<A, HeadTailTest<B, C>>::Tail::Tail who5;//C
 ```
 ## 여기서 특수화의 개념이 좀 더 명확해 진다. 특수화는 구조체 템플릿의 선언인 기본 틀에서 어떤 타입을 구체적으로 정해줄 경우에만 특수화로 볼 수 있다.
 ```cpp
