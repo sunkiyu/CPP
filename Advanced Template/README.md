@@ -125,3 +125,36 @@ struct HeadTailLength<HeadTailTest<T,U...>>      //파라미터를 하나만 받
 //How to Use
  HeadTailLength<HeadTailTest<int,int,int>>::value;//3
 ```
+***
+```cpp
+//이 템플릿 구조체는 타입 1개와 int 형 인자 1개만 받는다.
+template<typename TL, int index>
+struct FindType;
+
+//index가 0일 경우 이쪽 FindType 구조체가 맵핑 될것이며
+//이때는 Head에 찾고자하는 Type이 맵핑될 것이다.
+//Tail은 없거나 HeadTailTest에 따라 뒤의 타입들이 있을 것이다.
+template<typename Head, typename... Tail>
+struct FindType<HeadTailTest<Head, Tail...>, 0>
+{
+    using Result = Head;
+    FindType()
+    {
+        cout<<"TypeAt"<<endl;
+    };
+};
+
+template<typename Head, typename... Tail, int index>
+struct FindType<HeadTailTest<Head, Tail...>, index>
+{
+    using Result = typename FindType<HeadTailTest<Tail...>, index - 1>::Result;
+    FindType()
+    {
+        cout<<"TypeAt"<<endl;
+    };
+};
+
+//How to Use
+using HTL = HeadTailTest<int,double,float>;
+FindType<HTL, 1>::Result whoAMI6;
+```
