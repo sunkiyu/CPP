@@ -95,3 +95,33 @@ struct HeadTailTest<T,char> //마찬가지로 특수화 OK
 
 };
 ```
+***
+```cpp
+template <typename ...ARGS>
+struct TestStruct;
+
+//이 템플릿 구조체는 템플파라미터로 하나만 받는다.
+template<typename T>
+struct HeadTailLength
+{
+    using Head = T;
+    HeadTailLength(){
+        cout<<"HeadTailLength()"<<endl;
+    };
+};
+
+template<>
+struct HeadTailLength<HeadTailTest<>>
+{
+    enum {value=0};
+};
+
+template <typename T,typename ...U>              //템플릿 구조체 기본 선언에서 파마미터를 하나만 받는다. 특수화 구조체 파마미터로 여러개 전달 할 수는 있다.
+struct HeadTailLength<HeadTailTest<T,U...>>      //파라미터를 하나만 받으므로 하나만 받도록 특수화 할 수 있다. (HeadTailTest) 1개
+{
+    enum {value = 1 + HeadTailLength<HeadTailTest<U...>>::value};      //T,U... 처럼 여러개를 받는 템플릿 구조체면 모두 가능하다. 위의 TestStruct 샘플을 넣어도 OK
+};
+
+//How to Use
+ HeadTailLength<HeadTailTest<int,int,int>>::value;//3
+```
