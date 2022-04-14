@@ -1,5 +1,6 @@
 # Advanced Template 고급 템플릿
 
+```cpp
 //템플릿 구조체 선언
 //이 템플릿은 여러개의 인자를 받을 수 있다.
 template<typename ...T>
@@ -64,7 +65,9 @@ struct HeadTailTest<T,U>            //컴파일 에러 -> 템플릿 구조체 �
     };
 
 };
+```
 ## 여기서 특수화의 개념이 좀 더 명확해 진다. 특수화는 구조체 템플릿의 선언인 기본 틀에서 어떤 타입을 구체적으로 정해줄 경우에만 특수화로 볼 수 있다.
+```cpp
  template<typename T>
 struct HeadTailTest<T,T>    //기본 선언(T,U)에서 두 파라미터가 모두 같은 경우에 사용한다라고 특수화 OK
 {
@@ -84,3 +87,4 @@ struct HeadTailTest<T,char> //마찬가지로 특수화 OK
     };
 
 };
+```
