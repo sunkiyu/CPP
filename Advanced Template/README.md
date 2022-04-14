@@ -156,5 +156,44 @@ struct FindType<HeadTailTest<Head, Tail...>, index>
 
 //How to Use
 using HTL = HeadTailTest<int,double,float>;
-FindType<HTL, 1>::Result whoAMI6;
+FindType<HTL, 1>::Result whoAMI6; // double
+```
+***
+```cpp
+//이 템플릿 구조체는 T,U 두가지 타입만 받을 것이다.
+template<typename T,typename U>
+struct FindIndex;
+
+template<typename... Tail, typename T>
+//기본 템플릿이 T,U 두가지 인자만 받으므로 HeadTailTest<T, Tail...>,T 두가지 인자만 받는다.
+//인자 순회 중 첫번째 타입이 T와 일치하는 경우
+struct FindIndex<HeadTailTest<T, Tail...>, T>
+{
+    enum { value = 0 };
+};
+
+template<typename T>
+//기본 템플릿이 T,U 두가지 인자만 받으므로 HeadTailTest<Head, Tail...>,T 두가지 인자만 받는다.
+//인자를 모두 순회했느데도 타입 T를 찾지 못헀다.
+struct FindIndex<HeadTailTest<>, T>
+{
+    enum { value = -1 };
+};
+
+template<typename Head, typename... Tail, typename T>
+//기본 템플릿이 T,U 두가지 인자만 받으므로 HeadTailTest<Head, Tail...>,T 두가지 인자만 받는다.
+struct FindIndex<HeadTailTest<Head, Tail...>, T>
+{
+private:
+//찾았을 때는 temp 1, 못찾으면 -1
+    enum { temp = FindIndex<HeadTailTest<Tail...>, T>::value };
+
+public:
+//못찾아서 temp가 -1이면 value =-1 찾았으면 temp가 0이므로 0+1이 value가 되고 계속 재귀를 1씩 더해가며 벋어나서 타입 인덱스를
+//얻을 수 있다.
+    enum { value = (temp == -1) ? -1 : temp + 1 };
+};
+
+//How to Use
+FindIndex<HTL,double>::value; //1
 ```
