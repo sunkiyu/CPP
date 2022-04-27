@@ -48,4 +48,7 @@
 
 ### Stack Header에 Next의 주소값 뿐만 아니라 Sequence와 Depth를 두어 새로들어온 Stack인지 기존에 있던 Stack인지 더 정교하게 검사할 수 있다.   
 ### 기존 단순 주소값만 비교할 경우 새롭게 들어온 Stack일지라도 주소값이 같다면 기존에 있던 Stack과 똑같이 처리하였지만,   
-### Sequence와 Depth도 함께 비교한다면 주소값이 같더라도 Pop & Push 작업에 의해 Sequence와 Depth 값이 변경되었을 것이므로 기존의 Top과 다른것을 알 수 있다.
+### Sequence와 Depth도 함께 비교한다면 주소값이 같더라도 Pop & Push 작업에 의해 Sequence와 Depth 값이 변경되었을 것이므로 기존의 Top과 다른것을 알 수 있다.   
+
+* MS에서 제공하는 SLIST_ENTRY 구조체가 ABA Problem 대책을 제공한다.    
+* 해당 구조체는 16바이트 정렬을 시키고 각 스택마다 Sequence와 Depth를 둬서 CAS 연산을 진행한다.   
