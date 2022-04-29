@@ -1,4 +1,4 @@
-#vector vs linked list
+# vector vs linked list
 * vector.capacity() = 벡터의 용량   
 * vector의 capacity()가 꽉 찼는데 push_back하면 기존에 있던것들을 복사하여 용량을 늘린다.(좌측값 cost 복사 생성자 호출)   
 * vector.resize()는 벡터를 사이즈 만큼 채우는 것을 말함   
