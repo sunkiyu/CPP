@@ -1,5 +1,5 @@
 # vector vs linked list
-* vector.capacity() = 벡터의 용량   
+* vector.capacity() = 벡터의 용량, reserve로 capacity를 늘릴때 기존 iterator및 참조가 무효화 되니 주의
 * vector의 capacity()가 꽉 찼는데 push_back하면 기존에 있던것들을 복사하여 용량을 늘린다.(좌측값 cost 복사 생성자 호출)   
 * vector.resize()는 벡터를 사이즈 만큼 채우는 것을 말함   
 * 벡터는 연속적인 메모리 vs 리스트는 비연속적 메모리   
